@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>소개 | 직주근접편</title>
+<meta name="description" content="직주근접편이 쓰는 데이터와 출퇴근 시간·집값 계산 기준.">
+<link rel="canonical" href="https://jikju.factpane.com/%EC%86%8C%EA%B0%9C/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="직주근접편">
+<meta property="og:title" content="소개 | 직주근접편">
+<meta property="og:description" content="직주근접편이 쓰는 데이터와 출퇴근 시간·집값 계산 기준.">
+<meta property="og:url" content="https://jikju.factpane.com/%EC%86%8C%EA%B0%9C/">
+<meta property="og:image" content="https://jikju.factpane.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2d2b2a">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/fonts/pretendard.css">
+<link rel="stylesheet" href="/style.css">
+<script>(function(c){if(location.hostname!==c.host)return;window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config',c.id);var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(c.id);document.head.appendChild(s)})({"id":"G-ZFTC04JTTJ","host":"jikju.factpane.com"})</script>
+</head>
+<body>
+<!-- impeccable direction
+THESIS: 역에서 매일 보는 안내 사인의 문법으로 '어디까지 몇 분, 얼마'를 읽힌다. 색은 기능일 때만 쓴다.
+OWN-WORLD: 흰 바탕에 먹색 글자. 숯색은 사이트 머리 띠와 페이지당 한 번의 절 머리에만. 출구 노랑(검정 글자)은 '30분 안' 한 뜻, 고른 칸은 먹색 바탕 흰 글자. 노선 색은 배지·역명판 띠·지도의 그 업무지구 노선에만, 노선 이름 글자와 같이.
+STORY: 직장을 고르면 지도와 표가 같은 띠 기호로 30·45·60분을 말한다. 역에 들어가면 한 줄 역명판, 집값 한 줄, 업무지구 13곳 막대 표가 이어진다.
+FIRST VIEWPORT: 직장 1280은 제목·도착역·고르기·지도·계산 기준, 폰은 고르기 바로 아래 지도. 역 1280은 역명판·집값 줄·13곳 표.
+FORM: 후보 1번 '수도권 전철 안내 체계'. seed 13923960의 배정은 5번이었고 세 시안 심사로 1번을 골랐다. 올림: [A 보고서] 단위·주·자료 줄, 지도 띠 명도 단조, 지도 이름표 절제, 역 표 0~90분 막대. [C slate] 역 첫 화면 집값 줄, 집값 열 정렬 버튼.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+<header class="site-head"><div class="head-in"><a class="brand" href="/"><span class="brand-name">직주근접편</span><span class="brand-tag">업무지구까지 N분 안에 닿는 역과 그 동네 실거래가</span></a></div></header>
+<main class="wrap">
+<div class="prose">
+<h1>직주근접편 소개</h1>
+<p>수도권 업무지구를 고르면 평일 09:00에 그 업무지구 역에 닿는 역과 출근 시간, 18:30 이후 퇴근 시간과 막차, 역이 있는 법정동의 실거래 중간값을 보여 줍니다. 지금 페이지는 시간표는 2026년 11월 5일에 받은 평일 시간표, 실거래는 2025년 11월~2026년 10월 계약 기준입니다.</p>
+<h2>업무지구 13곳</h2>
+<ul><li>강남: 강남역·역삼역·선릉역</li><li>삼성: 삼성역(무역센터)·봉은사역</li><li>여의도: 여의도역·여의나루역·국회의사당역</li><li>광화문·시청: 광화문역(세종문화회관)·시청역·종각역·을지로입구역</li><li>판교: 판교역(판교테크노밸리)</li><li>마곡: 마곡나루역·마곡역·발산역</li><li>가산·구로디지털단지: 가산디지털단지역·구로디지털단지역</li><li>성수: 성수역·뚝섬역·서울숲역</li><li>상암 DMC: 디지털미디어시티역</li><li>용산: 용산역·신용산역</li><li>잠실: 잠실역(송파구청)</li><li>서울역: 서울역</li><li>인천공항: 인천공항1터미널역·인천공항2터미널역</li></ul>
+<h2>출퇴근 시간 계산</h2>
+<ul><li>출근은 평일 09:00까지 업무지구 역(업무지구마다 1~4개 역 중 아무 곳)에 닿는 가장 늦은 열차를 탄다고 보고, 그 열차가 출발역을 떠나 업무지구 역에 닿기까지 걸린 시간을 출근 시간으로 셉니다. 일찍 닿아 09:00까지 남는 시간은 넣지 않아 퇴근 시간과 같은 기준입니다. KTX·무궁화 같은 간선 열차나 공항철도 직통처럼 따로 표를 사는 열차를 타야 나오는 출근 시간은 표와 FAQ에 그 열차와 타는 역·시각을 함께 적습니다. 걸어서 다른 역(아산역 → 천안아산역)으로 가 타는 길이면 출발은 걷기 시작하는 시각입니다.</li><li>갈아타며 기다리는 시간은 넣고, 처음 역에 가서 열차를 기다리는 시간은 넣지 않습니다. 집에서 역까지, 직장 역에서 회사까지 걷는 시간도 넣지 않은 역에서 역까지의 시간입니다.</li><li>환승 보행은 서울교통공사 환승역 자료의 보행 시간에 계단·타고 내리는 여유 2분을 더하고, 자료에 없는 환승역은 4분으로 봅니다.</li><li>국토교통부 시간표에는 열차번호와 급행 표시가 없어 이웃 역 시각으로 열차를 이어 붙였습니다. 9호선·1호선·수인분당선 급행, 경춘선 ITX, 공항철도 직통이 출근 시간에 들어갑니다.</li><li>KTX·ITX·무궁화는 천안아산·오송·대전·수원·평택과 서울역·용산·광명 사이 평일 하루치 계획 시각을 씁니다. SRT는 공개된 시각 자료가 없어 빠져 있습니다.</li><li>퇴근은 18:30 이후 업무지구 역을 떠나 그 역에 가장 일찍 닿는 열차의 걸린 시간, 막차는 그날 그 역까지 갈 수 있는 마지막 열차가 업무지구 역을 떠나는 시각입니다.</li><li>같은 이름의 역은 노선을 합쳐 가장 좋은 값을 씁니다. 이름이 같아도 걸어서 갈아탈 수 없는 역(양평 5호선·경의중앙, 신촌 2호선·경의중앙)은 노선을 붙여 따로 셉니다.</li><li>국토교통부 TAGO 시간표에 열차가 0편인 역-노선은 빼고 계산합니다: 자기부상 인천공항1터미널역·장기주차장역·합동청사역·파라다이스시티역·워터파크역·용유역, 경의중앙 도라산역. 같은 이름의 다른 노선이 있으면 그 노선 값만 씁니다.</li></ul>
+<h2>집값</h2>
+<ul><li>집값은 역이 있는 법정동의 최근 12개월 국토교통부 실거래가 신고 중간값입니다. 해제된 거래와 갱신 계약은 빼고 3건 미만인 칸은 비웁니다.</li><li>월세는 보증금 중간값을 먼저 내고, 보증금이 그 ±20% 안인 계약만 모아 월세 중간값과 건수를 냅니다. 두 중간값을 따로 내면 그 보증금으로 맺은 계약과 동떨어진 월세가 짝지어집니다. 월세 계약은 3건 이상인데 그 ±20% 안 계약이 3건 미만이면 값 대신 ‘보증금 제각각’과 월세 계약 수를 적습니다.</li><li>역이 동 경계에 있으면 옆 동 거래는 들어가지 않습니다. 아파트는 60㎡ 이하·60~85㎡ 값을 따로 보여 주고, 단독·다가구는 전월세 건수와 월세 중간값만 냅니다.</li><li>신고 자료에는 행복주택·공공임대 계약이 구분 없이 섞여 있어 임대단지가 많은 동은 전세·월세 중간값이 낮게 나올 수 있습니다.</li></ul>
+<h2>데이터 출처와 이용허락</h2>
+<ul><li>국토교통부 TAGO 지하철정보(공공데이터포털 15098554): 역 목록과 평일 역별 열차 시각 <span class="sub">(이용허락범위 제한 없음)</span></li><li>국토교통부 TAGO 열차정보(15098552): KTX·ITX·무궁화 계획 시각 <span class="sub">(이용허락범위 제한 없음)</span></li><li>서울교통공사 열차시간표(15143847): TAGO에 열차가 없는 2호선 성수지선·신정지선의 평일 열차 시각 <span class="sub">(이용허락범위 제한 없음)</span></li><li>서울교통공사 환승역 환승거리·소요시간(15044419): 환승 보행 시간 <span class="sub">(이용허락범위 제한 없음(공공데이터포털 등록본, 2026-11-04 확인))</span></li><li>국가철도공단 도시광역철도 역사정보(철도산업정보센터 레일포털 파일): 역 주소와 좌표(법정동을 찾고 환승 거리를 재고, 직장 페이지 지도에 역 위치를 점으로 그리는 데 씀. 주소·위경도 값은 싣지 않음) <span class="sub">(이용허락범위 제한 없음, 공공데이터포털 15093755)</span></li><li>전국도시철도역사정보표준데이터(15013205): 레일포털 파일에 없는 역의 주소와 좌표 <span class="sub">(이용허락범위 제한 없음)</span></li><li>행정안전부 도로명주소: 역 주소가 속한 법정동(도로명주소 안내시스템 juso.go.kr 검색) <span class="sub">(이용허락범위 제한 없음)</span></li><li>국토교통부 법정동코드(15123287): 역 주소를 실거래 시군구 코드로 바꾸기 <span class="sub">(이용허락범위 제한 없음)</span></li><li>국토교통부 실거래가 7종(15126464~15126475): 아파트·오피스텔·연립다세대 매매·전월세, 단독·다가구 전월세 <span class="sub">(이용허락범위 제한 없음)</span></li><li>서울특별시 대중교통환승경로 조회(15000414): 환승 여유 시간과 출근 시간 검증(값은 싣지 않음) <span class="sub">(저작자표시)</span></li></ul>
+<h2>운영</h2>
+<p>직주근접편은 flowtrace가 운영하는 개인 프로젝트이며 광고 수익으로 유지됩니다.</p>
+<p>틀린 내용을 찾았거나 물어볼 것이 있으면 <a href="mailto:contact@factpane.com">contact@factpane.com</a>으로 메일 주세요.</p>
+</div>
+</main>
+<footer class="site-foot"><div class="foot-in"><p>자료: 국토교통부 TAGO 지하철정보·열차정보, 서울교통공사 열차시간표(2호선 지선), 국토교통부 실거래가, 국가철도공단 도시광역철도 역사정보, 서울교통공사 환승역 환승거리·소요시간, 국토교통부 법정동코드(공공데이터포털), 행정안전부 도로명주소, 서울특별시 대중교통환승경로(검증용).</p><p><a href="/소개/">소개</a> · <a href="/개인정보처리방침/">개인정보처리방침</a></p></div></footer>
+</body>
+</html>
