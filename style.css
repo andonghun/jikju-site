@@ -1,0 +1,415 @@
+/* 직주근접편: 수도권 전철 안내 체계. 흰 바탕·먹색 글자, 숯색은 사이트 머리 띠와 페이지당 한 번의 절 머리에만.
+   출구 노랑(검정 글자)은 '30분 안' 한 뜻(지도 점, 표 띠 기호, 역 표 막대)에만 쓰고, 고른 칸은 먹색 바탕 흰 글자다.
+   노선 색은 노선 배지·역명판 띠·지도의 그 업무지구 노선에만 쓰고 늘 노선 이름 글자와 같이 둔다.
+   간격 4 8 12 16 24 32 48 64 96, 글자 12 14 16 18 20 24 30 36 48, 굵기 400·700, 반경 2px·6px·50%. 색은 :root 토큰만. */
+:root {
+  --ink: hsl(30 6% 10%);
+  --ink-2: hsl(30 4% 30%);
+  --ink-3: hsl(30 3% 40%);
+  --line: hsl(30 5% 82%);
+  --line-2: hsl(30 8% 91%);
+  --bg: hsl(0 0% 100%);
+  --bg-2: hsl(40 14% 96%);
+  --bg-3: hsl(40 10% 89%);
+  --band: hsl(30 4% 17%); /* src/site.ts themeColor #2d2b2a */
+  --band-ink: hsl(0 0% 100%);
+  --band-ink-2: hsl(40 8% 80%);
+  --exit: hsl(49 100% 50%);
+  --exit-ink: hsl(30 6% 10%);
+  --map-line: hsl(30 5% 84%);
+  --map-60: hsl(30 3% 58%);
+  --map-out: hsl(30 5% 80%);
+  --radius: 2px;
+  --radius-2: 6px;
+  --font: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+
+  /* 노선 색(노선 표시에만) */
+  --l1: #0052A4; --l2: #00A84D; --l3: #EF7C1C; --l4: #00A5DE; --l5: #996CAC; --l6: #CD7C2F;
+  --l7: #747F00; --l8: #E6186C; --l9: #BDB092; --sb: #D4003B; --sd: #F5A200; --gj: #77C4A3;
+  --ap: #0090D2; --gc: #0C8E72; --sh: #8FC31F; --ga: #9A6292; --ui: #B0CE18; --sl: #6789CA;
+  --gg: #A17800; --i1: #7CA8D5; --i2: #ED8B00; --ev: #56AD2D; --uj: #FDA600; --gk: #003DA5; --mg: #FFB300;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { -webkit-text-size-adjust: 100%; scrollbar-color: var(--ink-3) var(--bg-2); }
+body { margin: 0; font-family: var(--font); font-size: 16px; line-height: 1.55; color: var(--ink); background: var(--bg); caret-color: var(--ink); word-break: keep-all; overflow-wrap: break-word; font-variant-numeric: tabular-nums; }
+::selection { background: var(--bg-3); color: var(--ink); }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: var(--ink-3); }
+a:hover { text-decoration-color: var(--ink); text-decoration-thickness: 2px; }
+p { margin: 0 0 12px; }
+b, strong { font-weight: 700; }
+h1, h2, h3 { margin: 0; line-height: 1.2; letter-spacing: -0.01em; font-weight: 700; overflow-wrap: break-word; min-width: 0; }
+h1 { font-size: 24px; letter-spacing: -0.02em; margin: 12px 0 16px; text-wrap: balance; }
+@media (min-width: 720px) { h1 { font-size: 36px; } }
+.sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* 머리·꼬리 */
+.site-head { background: var(--band); color: var(--band-ink); }
+.head-in, .foot-in, .wrap { max-width: 1248px; margin: 0 auto; padding: 0 24px; }
+.brand { display: inline-flex; align-items: baseline; gap: 12px; padding: 12px 0; color: var(--band-ink); text-decoration: none; }
+.brand:hover { text-decoration: underline; text-decoration-color: var(--band-ink-2); }
+.site-head :focus-visible { outline-color: var(--band-ink); }
+.brand-name { font-size: 18px; font-weight: 700; }
+.brand-tag { font-size: 14px; color: var(--band-ink-2); }
+.site-foot { border-top: 1px solid var(--line); margin-top: 96px; padding: 32px 0 48px; font-size: 14px; color: var(--ink-2); }
+.site-foot p { max-width: 80ch; margin-bottom: 8px; }
+.site-foot a { color: var(--ink-2); }
+.preview-note { background: var(--bg-3); color: var(--ink); padding: 8px 16px; font-size: 14px; text-align: center; }
+.crumbs { font-size: 14px; color: var(--ink-2); margin-top: 16px; }
+.crumbs a { color: var(--ink-2); }
+
+.lead { font-size: 18px; line-height: 1.55; max-width: 65ch; margin-bottom: 24px; }
+.basis { font-size: 14px; color: var(--ink-3); white-space: nowrap; }
+.sub, .related { font-size: 14px; color: var(--ink-2); }
+.related { max-width: 65ch; }
+
+/* 절 제목: 먹 괘선 + 굵은 제목. 숯색 띠(.band-h)는 페이지마다 많아야 한 번 */
+.sec-h, .band-h, .faq h2, .prose h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font-size: 20px; }
+.sec-h, .faq h2, .prose h2 { margin: 48px 0 12px; padding-top: 12px; border-top: 1px solid var(--ink); }
+.band-h { margin: 64px 0 12px; padding: 12px 16px; background: var(--band); color: var(--band-ink); border-radius: var(--radius); }
+.sec-h small, .band-h small { font-size: 14px; font-weight: 400; color: var(--ink-2); }
+.sec-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 48px 0 12px; padding-top: 12px; border-top: 1px solid var(--ink); }
+.sec-row .sec-h { flex: 1 1 auto; margin: 0; padding: 0; border: 0; }
+.sec-row .unit { margin: 0 0 0 auto; }
+/* 건너뛰기 링크는 .sr과 같이 숨었다가 초점을 받으면 보인다 */
+.skip.sr:focus { position: static; display: inline-block; width: auto; height: auto; margin: 0 0 8px; overflow: visible; clip: auto; white-space: normal; }
+.band-h small { color: var(--band-ink-2); }
+
+/* 단위 줄과 주·자료 줄: 사인 아래 안내문처럼 작게 */
+.unit { margin: 0 0 4px; font-size: 12px; color: var(--ink-2); text-align: right; }
+.notes { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 8px; margin: 8px 0 0; font-size: 12px; line-height: 1.5; color: var(--ink-2); max-width: 90ch; }
+.notes dt { font-weight: 700; }
+.notes dt::after { content: ":"; }
+.notes dd { margin: 0; }
+.notes ol { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.warn { margin: 8px 0 0; font-size: 14px; color: var(--ink); }
+
+/* 노선 배지: 노선 색 테두리 원 + 먹색 글자(흰 바탕 위라 대비가 노선 색과 상관없다). 배지는 꾸밈이고 옆 글자가 노선 이름 */
+.route { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; color: var(--ink-2); white-space: nowrap; }
+.badge { display: inline-grid; place-items: center; width: 24px; height: 24px; flex: none; border: 2px solid var(--c); border-radius: 50%; background: var(--bg); color: var(--ink); font-size: 12px; font-weight: 700; line-height: 1; }
+.l1 { --c: var(--l1); } .l2 { --c: var(--l2); } .l3 { --c: var(--l3); } .l4 { --c: var(--l4); } .l5 { --c: var(--l5); } .l6 { --c: var(--l6); }
+.l7 { --c: var(--l7); } .l8 { --c: var(--l8); } .l9 { --c: var(--l9); } .sb { --c: var(--sb); } .sd { --c: var(--sd); } .gj { --c: var(--gj); }
+.ap { --c: var(--ap); } .gc { --c: var(--gc); } .sh { --c: var(--sh); } .ga { --c: var(--ga); } .ui { --c: var(--ui); } .sl { --c: var(--sl); }
+.gg { --c: var(--gg); } .i1 { --c: var(--i1); } .i2 { --c: var(--i2); } .ev { --c: var(--ev); } .uj { --c: var(--uj); } .gk { --c: var(--gk); }
+.mg { --c: var(--mg); } .lx { --c: var(--ink-3); }
+
+/* 띠 기호(지도 점과 같은 모양): 가까울수록 크고 진하다 */
+.sym { display: inline-block; width: 14px; height: 14px; margin-right: 8px; vertical-align: -2px; flex: none; }
+.b30 circle { fill: var(--exit); stroke: var(--ink); stroke-width: 1.5px; vector-effect: non-scaling-stroke; }
+.b45 circle { fill: var(--bg); stroke: var(--ink); stroke-width: 1.25px; vector-effect: non-scaling-stroke; }
+.b60 circle { fill: var(--map-60); }
+.bx circle { fill: var(--map-out); }
+.own { fill: var(--ink); stroke: var(--bg); stroke-width: 2px; vector-effect: non-scaling-stroke; }
+.own-in { fill: var(--bg); }
+.map .own, .map .own-in { transform-box: fill-box; transform-origin: center; }
+
+/* 30·45·60 고르기: 고른 칸은 먹색 바탕 흰 글자 */
+.limit { border: 0; padding: 0; margin: 0 0 24px; min-width: 0; }
+.pick[hidden], .limit[hidden] { display: none; }
+.limit legend { padding: 0; margin-bottom: 8px; font-size: 14px; font-weight: 700; color: var(--ink-2); }
+.seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 420px; border: 1px solid var(--ink); border-radius: var(--radius); background: var(--bg); }
+.seg label { position: relative; display: block; cursor: pointer; }
+.seg label + label { border-left: 1px solid var(--ink); }
+.seg input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.seg-box { display: flex; flex-direction: column; justify-content: center; min-height: 48px; padding: 8px 12px; }
+.seg-t { font-size: 16px; font-weight: 700; }
+.seg-n { font-size: 14px; color: var(--ink-2); }
+.seg label:hover .seg-box { background: var(--bg-2); }
+.seg input:checked + .seg-box { background: var(--ink); color: var(--band-ink); }
+.seg input:checked + .seg-box .seg-n { color: var(--band-ink-2); }
+.seg input:focus-visible + .seg-box { outline: 3px solid var(--ink); outline-offset: 2px; position: relative; z-index: 1; }
+
+/* 직장 페이지 첫 화면 */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "map" "defs"; }
+.hero-head { grid-area: head; }
+.hero h1 { margin-top: 8px; }
+.map-fig { grid-area: map; margin: 8px 0 0; min-width: 0; max-width: 720px; }
+.basis-box { grid-area: defs; }
+@media (min-width: 1100px) {
+  .hero { grid-template-columns: minmax(0, 1fr) 664px; grid-template-rows: auto 1fr; grid-template-areas: "head map" "defs map"; column-gap: 48px; }
+}
+.arrive { list-style: none; margin: 0 0 16px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.arrive li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.basis-box { margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--ink); max-width: 560px; }
+.basis-box h2 { font-size: 16px; margin-bottom: 12px; }
+.defs { margin: 0; display: grid; gap: 8px; }
+.defs div { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; font-size: 14px; line-height: 1.5; }
+.defs dt { font-weight: 700; }
+.defs dd { margin: 0; color: var(--ink-2); }
+.defs-more { margin: 12px 0 0; font-size: 14px; color: var(--ink-2); }
+
+/* 통근권 지도 */
+.fig-cap { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; margin-bottom: 8px; }
+.fig-cap b { font-size: 18px; }
+.fig-cap .unit { margin: 0; }
+.map-frame { border: 1px solid var(--line); border-radius: var(--radius-2); background: var(--bg); }
+.map { display: block; width: 100%; height: auto; font-family: var(--font); }
+.ln { fill: none; stroke: var(--map-line); stroke-width: 1.25px; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.ln-on { fill: none; stroke: var(--c); stroke-width: 3.5px; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+/* 지도 점: 띠마다 둥근 끝 선분 path(src/pages/map.ts dotSvg). 굵기 = 지름(DOT_R × 2, 30·45분은 테 바깥까지), 안쪽 채움은 use(.in) */
+.map .dots g { fill: none; stroke-linecap: round; transition: stroke 160ms ease-out, stroke-width 160ms ease-out; }
+.map .dots .b30 { stroke: var(--ink); stroke-width: 10.5; }
+.map .dots .b30 .in { stroke: var(--exit); stroke-width: 7.5; }
+.map .dots .b45 { stroke: var(--ink); stroke-width: 8.25; }
+.map .dots .b45 .in { stroke: var(--bg); stroke-width: 5.75; }
+.map .dots .b60 { stroke: var(--map-60); stroke-width: 5; }
+.map .dots .bx { stroke: var(--map-out); stroke-width: 3.5; }
+/* 거르기 밖 점은 60분 넘음 모양(옅고 작게) */
+[data-max="30"] .map .dots .b45, [data-max="30"] .map .dots .b60, [data-max="45"] .map .dots .b60 { stroke: var(--map-out); stroke-width: 3.5; }
+[data-max="30"] .map .dots .b45 .in { display: none; }
+.lab { display: none; font-weight: 700; fill: var(--ink); paint-order: stroke; stroke: var(--bg); stroke-width: 4px; stroke-linejoin: round; }
+.lab.m { stroke-width: 7px; }
+.map .ldr { fill: none; stroke: var(--ink); stroke-width: 1px; vector-effect: non-scaling-stroke; display: none; }
+[data-max="30"] .d.L30, [data-max="45"] .d.L45, [data-max="60"] .d.L60 { display: inline; }
+.scale path { fill: none; stroke: var(--ink-2); stroke-width: 1.5px; vector-effect: non-scaling-stroke; }
+.scale text { fill: var(--ink-2); }
+.sc.m { display: none; }
+.legend { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; }
+.legend li { display: inline-flex; align-items: center; }
+/* 지도 범례는 거르기를 따라간다: 범위 밖이 된 띠 칸은 숨고 '넘음' 칸이 그 거르기 분을 말한다 */
+.lg-t30, .lg-t45 { display: none; }
+[data-max="30"] .lg-t60, [data-max="45"] .lg-t60 { display: none; }
+[data-max="30"] .lg-t30, [data-max="45"] .lg-t45 { display: inline; }
+[data-max="30"] .lg-b45, [data-max="30"] .lg-b60, [data-max="45"] .lg-b60 { display: none; }
+.line-key { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 8px 0 0; font-size: 14px; color: var(--ink-2); }
+
+/* 표: 역·출근·대표 집값이 주인공(굵게), 나머지 칸은 한 단계 낮춘다 */
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+.rows { margin: 0; }
+.rows th, .rows td { padding: 8px; border-bottom: 1px solid var(--line-2); text-align: right; vertical-align: baseline; white-space: nowrap; }
+.rows th:first-child { text-align: left; white-space: normal; padding-left: 0; }
+.rows thead th { position: sticky; top: 0; z-index: 2; background: var(--bg); font-size: 14px; font-weight: 400; color: var(--ink-2); border-bottom: 1px solid var(--ink); box-shadow: inset 0 -1px 0 var(--ink); vertical-align: bottom; line-height: 1.3; }
+.th-sub { display: block; font-size: 12px; color: var(--ink-3); }
+.rows tbody th { font-weight: 400; }
+.rt { margin-left: 4px; font-size: 14px; color: var(--ink-3); }
+/* 별도 요금 열차로만 나오는 출근 값(KTX·무궁화·공항철도 직통). 이름 칸 아래 한 줄 */
+.paid { display: block; margin-top: 2px; font-size: 12px; line-height: 1.4; color: var(--ink-3); white-space: normal; }
+.go { font-size: 18px; font-weight: 700; }
+.go .u { font-size: 14px; font-weight: 400; }
+.rows td.key { font-weight: 700; }
+.rows td:not(.go):not(.key) { color: var(--ink-2); }
+.rows thead th.go, .rows thead th.key { font-size: 14px; font-weight: 400; }
+.band-row th { padding: 8px; background: var(--bg-2); font-size: 14px; font-weight: 700; border-bottom: 1px solid var(--line); text-align: left; }
+.rows .band-row th:first-child { padding-left: 8px; }
+.band-row .cnt { font-weight: 400; color: var(--ink-2); }
+.rows tbody tr:not(.band-row):hover { background: var(--bg-2); }
+.rows tr[hidden], .rows tbody[hidden] { display: none; }
+/* 정렬하면 띠 묶음이 풀리므로 행마다 띠 기호(지도 점과 같은 크기·채움)를 이름 앞에 붙인다(static/filter.js가 s30·s45·s60을 단다) */
+/* 내어쓰기: 띠 기호 자리(17px)만큼 들여 두고 첫 줄만 내어 써서, 좁은 폭에서 꺾인 노선 글자가 기호 밑이 아니라 역 이름 밑에서 시작한다 */
+.rows .flat tr > th:first-child { padding-left: 17px; text-indent: -17px; }
+.flat tr > th:first-child::before { content: ""; display: inline-block; border-radius: 50%; vertical-align: 1px; }
+.flat tr.s30 > th:first-child::before { width: 9px; height: 9px; margin: 0 8px 0 0; background: var(--exit); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.flat tr.s45 > th:first-child::before { width: 7px; height: 7px; margin: 0 9px 0 1px; background: var(--bg); box-shadow: inset 0 0 0 1.25px var(--ink); }
+.flat tr.s60 > th:first-child::before { width: 5px; height: 5px; margin: 0 10px 0 2px; background: var(--map-60); }
+.near-sec .sort-pick { display: none; max-width: 320px; margin: 0 0 12px; }
+.none { color: var(--ink-3); }
+
+/* 정렬 버튼(스크립트가 만든다) */
+.sort { display: inline-flex; align-items: center; gap: 4px; margin: 0; padding: 0; border: 0; background: none; font: inherit; color: inherit; text-align: inherit; cursor: pointer; }
+.sort:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.sort-ico { flex: none; }
+.sort-ico path { fill: none; stroke: var(--ink-3); stroke-width: 1.5px; stroke-linecap: round; stroke-linejoin: round; }
+[aria-sort="ascending"] .sort-ico .up, [aria-sort="descending"] .sort-ico .dn { stroke: var(--ink); stroke-width: 2px; }
+[aria-sort="ascending"] .sort-ico .dn, [aria-sort="descending"] .sort-ico .up { opacity: 0; }
+[aria-sort] > .sort { color: var(--ink); font-weight: 700; }
+/* 출근은 짧은 순 한 방향뿐이라 화살촉 하나가 곧 '고름' 모양이다. 고르지 않았으면 숨기고 hover·초점에서만 보인다 */
+th[data-sort="min"]:not([aria-sort]) .sort-ico { visibility: hidden; }
+th[data-sort="min"]:not([aria-sort]) .sort:hover .sort-ico, th[data-sort="min"]:not([aria-sort]) .sort:focus-visible .sort-ico { visibility: visible; }
+
+/* 역 페이지: 한 줄 역명판 */
+.sign { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; margin: 12px 0 12px; padding: 12px 16px; border: 1px solid var(--ink); border-radius: var(--radius-2); }
+.sign-id { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.sign-badges { display: flex; gap: 4px; flex: none; }
+.sign h1 { margin: 0; font-size: 36px; line-height: 1.2; text-wrap: wrap; }
+.sign-title { font-size: 18px; font-weight: 400; letter-spacing: 0; color: var(--ink-2); }
+/* 노선 띠는 이전 역 — 띠 — 노선 — 띠 — 다음 역을 역명판 끝까지 잇는다(subgrid로 노선마다 띠 자리를 맞춘다). 노선이 셋 이상이면 넓은 화면에서 두 단 */
+.strips { flex: 1 1 360px; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, max-content) minmax(48px, 1fr) auto minmax(48px, 1fr) minmax(0, max-content); gap: 4px 8px; min-width: 0; }
+@media (min-width: 1100px) {
+  .strips.many { grid-template-columns: repeat(2, minmax(0, max-content) minmax(32px, 1fr) auto minmax(32px, 1fr) minmax(0, max-content)); }
+  /* 두 단 띠가 토막 나지 않게 부제를 역 이름 아래로 내려 띠 자리를 넓힌다(역명판 높이는 띠 세 줄 안에서 그대로) */
+  .sign.many .sign-title { display: block; }
+}
+.strip { display: grid; grid-column: span 5; grid-template-columns: subgrid; align-items: center; font-size: 14px; }
+.nb { color: var(--ink-2); overflow-wrap: anywhere; }
+.nb-l { text-align: right; }
+.strip .bar { height: 8px; background: var(--c); border-radius: var(--radius); }
+.strip .route { color: var(--ink); font-weight: 700; }
+
+/* 동네 집값 한 줄: 이름과 값을 같은 기준선에 두는 흐름. 쌍마다 줄바꿈으로 갈라지지 않고 값만 굵다 */
+.kl-wrap { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 24px; border-top: 1px solid var(--line); }
+.kl-wrap .unit { margin: 0 0 0 auto; }
+.keyline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 24px; margin: 0; padding: 8px 0; }
+.keyline > div { display: flex; align-items: baseline; gap: 8px; max-width: 100%; white-space: nowrap; }
+.keyline dt { font-size: 14px; color: var(--ink-2); }
+.keyline dd { margin: 0; font-size: 16px; font-weight: 700; }
+.keyline .n { font-size: 14px; font-weight: 400; color: var(--ink-3); }
+.keyline .none { font-size: 14px; font-weight: 400; }
+.keyline .kl-last dd { white-space: normal; }
+
+
+/* 역 페이지 업무지구 표: 0~90분 막대, 세로선 60분. 13곳이 1280×800 첫 화면에 들어가게 줄 높이를 줄인다 */
+.go-sec .sec-row { margin-top: 24px; }
+.rows-st th, .rows-st td { padding-top: 4px; padding-bottom: 4px; line-height: 22px; }
+.rows-st .go { white-space: nowrap; }
+.mbar { position: relative; display: inline-block; width: 160px; height: 12px; margin-right: 12px; vertical-align: -1px; background: var(--bg-2); }
+.mbar i { position: absolute; top: 0; bottom: 0; left: 0; min-width: 8px; box-shadow: inset 0 0 0 1px var(--ink); }
+.mbar::after { content: ""; position: absolute; top: -4px; bottom: -4px; left: 66.67%; width: 1px; background: var(--ink); }
+/* 막대는 길수록 옅다(가까울수록 진하게): 30분 노랑+먹 테 > 31~45분 흰 채움+먹 테 > 46~60분 옅은 회색 > 60분 넘음 더 옅게 */
+.mbar.b30 i, .swatch.b30 { background: var(--exit); }
+.mbar.b45 i, .swatch.b45 { background: var(--bg); }
+.mbar.b60 i, .swatch.b60 { background: var(--line); box-shadow: none; }
+.mbar.bx i, .swatch.bx { background: var(--line-2); box-shadow: none; }
+.swatch { display: inline-block; width: 24px; height: 12px; margin-right: 8px; box-shadow: inset 0 0 0 1px var(--ink); }
+.mn { display: inline-block; min-width: 48px; }
+.rows-st tr.over th, .rows-st tr.over td { color: var(--ink-3); }
+
+/* 동네 실거래 표 */
+.deal-intro { max-width: 65ch; color: var(--ink-2); }
+.deal-box { max-width: 760px; margin-top: 24px; }
+.deal caption { caption-side: top; text-align: left; padding-bottom: 8px; font-size: 16px; font-weight: 700; }
+.deal .cap-u { float: right; margin: 4px 0 0 12px; font-weight: 400; }
+.nw { white-space: nowrap; }
+.deal th, .deal td { padding: 8px; border-bottom: 1px solid var(--line-2); text-align: left; vertical-align: top; }
+.deal th:first-child { padding-left: 0; }
+.deal thead th { font-size: 14px; font-weight: 400; color: var(--ink-2); border-bottom: 1px solid var(--ink); vertical-align: bottom; line-height: 1.3; }
+.deal .num { text-align: right; }
+.deal td { font-size: 16px; }
+.deal .n { display: block; font-size: 12px; color: var(--ink-3); }
+.deal td.none { font-size: 14px; }
+.deal .sub-row th { padding-left: 16px; font-size: 14px; color: var(--ink-2); }
+
+.transfer { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 16px 48px; }
+.transfer li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.transfer a { font-size: 18px; }
+.transfer .routes { display: flex; flex-wrap: wrap; gap: 8px 12px; }
+
+/* 자주 묻는 질문(kit faqSection: h2, h3·p 쌍) */
+.faq h3 { font-size: 16px; line-height: 1.4; margin: 16px 0 4px; }
+.faq p { margin: 0 0 16px; padding-bottom: 16px; max-width: 65ch; color: var(--ink-2); border-bottom: 1px solid var(--line-2); }
+@media (min-width: 1100px) {
+  .faq { display: grid; grid-template-columns: 400px minmax(0, 65ch); column-gap: 48px; }
+  .faq h2 { grid-column: 1 / -1; }
+  .faq h3 { margin: 0; padding: 16px 0; border-bottom: 1px solid var(--line-2); }
+  .faq p { margin: 0; padding: 16px 0; }
+}
+
+/* 홈 */
+.home-head { margin-top: 32px; }
+.home { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "form" "main" "dir"; gap: 24px; }
+.pick { grid-area: form; display: grid; gap: 16px; align-content: start; padding: 16px; background: var(--bg-2); border-radius: var(--radius-2); }
+.home-main { grid-area: main; min-width: 0; }
+.dir { grid-area: dir; }
+.dir .sec-h { margin-top: 24px; }
+@media (min-width: 1000px) {
+  .home { grid-template-columns: 320px minmax(0, 1fr); grid-template-rows: auto 1fr; grid-template-areas: "form main" "dir main"; column-gap: 48px; row-gap: 0; }
+}
+.field { display: grid; gap: 8px; }
+.field-k { font-size: 14px; font-weight: 700; color: var(--ink-2); }
+.select { position: relative; display: block; }
+.select select { appearance: none; width: 100%; min-height: 48px; padding: 12px 32px 12px 12px; font: inherit; font-size: 16px; color: var(--ink); background: var(--bg); border: 1px solid var(--ink); border-radius: var(--radius); }
+.chev { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.chev path { fill: none; stroke: var(--ink); stroke-width: 1.75px; stroke-linecap: round; stroke-linejoin: round; }
+.pick .limit { margin: 0; }
+.pick .seg { max-width: none; }
+.picked-cap { margin: 0 0 8px; font-size: 18px; font-weight: 700; }
+.picked-cap:empty { display: none; }
+.dir-t th, .dir-t td { padding: 8px; border-bottom: 1px solid var(--line-2); text-align: right; vertical-align: baseline; }
+.dir-t th:first-child { text-align: left; padding-left: 0; }
+.dir-t thead th { font-size: 14px; font-weight: 400; color: var(--ink-2); border-bottom: 1px solid var(--ink); white-space: nowrap; }
+.dir-t tbody th { font-weight: 400; }
+.dir-t .rt { display: block; margin: 4px 0 0; }
+/* 스크립트가 켜질 브라우저(html.js, src/pages/home.ts)면 첫 그림부터 고르기 판과 결과 자리를 잡아 목록이 밀리지 않게 하고,
+   꺼지면 결과 자리를 없애 목록이 전체 폭을 쓴다 */
+.js .pick[hidden] { display: grid; }
+html:not(.js) .home-main { display: none; }
+html:not(.js) .home { grid-template-columns: minmax(0, 1fr); grid-template-areas: "dir"; }
+html:not(.js) .dir { max-width: 720px; }
+@media (max-width: 999px) { .js .home-main { min-height: 100vh; } }
+
+/* 소개·개인정보·404 */
+.prose { max-width: 65ch; }
+.prose h1 { margin-top: 24px; }
+.prose ul { padding-left: 24px; }
+.prose li { margin-bottom: 8px; }
+.ad { margin: 24px 0; }
+
+/* 폰: 지도는 화면 끝까지, 표는 역·출근·대표 집값만 첫 줄, 나머지 칸은 칸 이름을 붙여 둘째 줄로 흐른다 */
+@media (max-width: 719px) {
+  .head-in, .foot-in, .wrap { padding: 0 16px; }
+  .brand-tag { display: none; }
+  .band-h { margin: 48px -16px 12px; border-radius: 0; font-size: 18px; }
+  .sec-h, .faq h2, .prose h2 { font-size: 18px; }
+  .lead { font-size: 16px; }
+  .map-fig { max-width: none; }
+  .map-frame { margin: 0 -16px; border-left: 0; border-right: 0; border-radius: 0; }
+
+  /* 폰 역명판: 노선 띠마다 배지와 노선 이름이 있으니 이름 옆 배지 묶음은 숨겨 역 이름이 전체 폭을 쓴다 */
+  .sign { gap: 12px; padding: 12px; }
+  .sign-badges { display: none; }
+  .sign h1 { font-size: 30px; }
+  .sign-title { display: block; margin-top: 4px; font-size: 16px; }
+  .strips, .strips.many { flex-basis: 100%; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .strip { grid-column: auto; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-areas: "a m b" "l . r"; gap: 4px 8px; }
+  .strip .bar-a { grid-area: a; } .strip .bar-b { grid-area: b; } .strip .route { grid-area: m; }
+  .nb-l { grid-area: l; text-align: left; } .nb-r { grid-area: r; text-align: right; }
+  .deal th, .deal td { padding: 8px 4px; }
+  .deal td { font-size: 14px; }
+}
+/* 표 접기: 직장 표(8칸)가 840px 아래에서 화면보다 넓어지므로 표는 840px 아래부터 역·출근·대표 집값만 첫 줄에 두고
+   나머지 칸은 칸 이름을 붙여 둘째 줄로 흐른다(가로 스크롤 상자 없이 thead sticky를 쓴다) */
+@media (max-width: 839px) {
+  .near-sec .sort-pick { display: grid; }
+  .rows, .rows thead, .rows tbody { display: block; }
+  .rows caption { display: block; }
+  .rows thead { position: sticky; top: 0; z-index: 2; background: var(--bg); border-bottom: 1px solid var(--ink); }
+  .rows tr { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line-2); }
+  .rows thead tr { padding: 8px 0 4px; border-bottom: 0; align-items: flex-end; }
+  .rows tr::after { content: ""; flex-basis: 100%; order: 1; }
+  .rows thead tr::after, .rows .band-row::after { content: none; }
+  .rows th, .rows td { display: block; padding: 0; border: 0; }
+  .rows thead th { position: static; border: 0; box-shadow: none; }
+  .rows tr > :first-child { flex: 1 1 0; min-width: 0; }
+  .rows .go { flex: none; min-width: 48px; }
+  .rows .key { flex: none; width: 72px; }
+  .rows .rt { margin-left: 0; }
+  .rows thead th:not(:first-child):not(.go):not(.key) { display: none; }
+  .rows td:not(.go):not(.key) { order: 2; margin-top: 4px; font-size: 14px; }
+  .rows td:not(.go):not(.key)::before { color: var(--ink-3); }
+  /* 칸 이름은 칸 순서로 붙이고 열 머리와 같은 이름을 쓴다(직장 .rows-w: 역·출근·환승·퇴근·막차·전세·월세·매매, 홈 .rows-h: 역·출근·환승·전세·월세·매매, 역 .rows-st: 업무지구·출근·출발·도착·환승·퇴근·막차) */
+  .rows-w td:nth-child(3)::before, .rows-h td:nth-child(3)::before, .rows-st td:nth-child(5)::before { content: "환승 "; }
+  .rows-w td:nth-child(4)::before, .rows-st td:nth-child(6)::before { content: "퇴근 "; }
+  .rows-w td:nth-child(5)::before, .rows-st td:nth-child(7)::before { content: "막차 "; }
+  .rows-w td:nth-child(7)::before, .rows-h td:nth-child(5)::before { content: "오피스텔 월세 "; }
+  .rows-w td:nth-child(8)::before, .rows-h td:nth-child(6)::before { content: "아파트 매매 "; }
+  .rows-st td:nth-child(3)::before { content: "출발 "; }
+  .rows-st td:nth-child(4)::before { content: "도착 "; }
+  .rows thead th::before { content: none; }
+  .rows .band-row { padding: 0; }
+  .rows .band-row th { flex: 1 1 100%; padding: 8px; }
+  .rows-st .mbar { width: 64px; margin-right: 8px; }
+  .rows-st tr { padding: 8px 0; }
+}
+/* 지도 폰 묶음: 지도가 600px보다 좁으면 폰 이름표·축척 글자와 키운 점·업무지구 표시를 쓴다(src/pages/map.ts DEVICES) */
+@media (max-width: 599px) {
+  [data-max="30"] .d.L30, [data-max="45"] .d.L45, [data-max="60"] .d.L60 { display: none; }
+  [data-max="30"] .m.L30, [data-max="45"] .m.L45, [data-max="60"] .m.L60 { display: inline; }
+  .sc.d { display: none; }
+  .sc.m { display: inline; }
+  /* 폰은 점을 1.35배(DEVICES.m.dot) */
+  .map .dots .b30 { stroke-width: 14.2; }
+  .map .dots .b30 .in { stroke-width: 10.1; }
+  .map .dots .b45 { stroke-width: 11.1; }
+  .map .dots .b45 .in { stroke-width: 7.8; }
+  .map .dots .b60 { stroke-width: 6.75; }
+  .map .dots .bx { stroke-width: 4.7; }
+  [data-max="30"] .map .dots .b45, [data-max="30"] .map .dots .b60, [data-max="45"] .map .dots .b60 { stroke-width: 4.7; }
+  .map .own, .map .own-in { transform: scale(2); }
+}
+@media (max-width: 480px) {
+  .seg-box { padding: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .map .dots g { transition: none; }
+}
